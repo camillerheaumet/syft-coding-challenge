@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { END_GAME, SELECT_CELL, RESET_GAME, WIN_CONDITIONS } from "../actions/moves";
+import { END_GAME, SELECT_CELL, RESET_GAME } from "../actions/moves";
 
 export const createBoard = (i) =>
   Array(i)
@@ -9,21 +9,11 @@ export const createBoard = (i) =>
         .fill(null)
     )
 
-export const checkForWinner = (board, action) => {
-  const flatBoard = board.flat(1);
-  const player = action.currentPlayer;
-  if (WIN_CONDITIONS.some(idxs => flatBoard[idxs[0]] === player && flatBoard[idxs[1]] === player && flatBoard[idxs[2]] === player)) {
-    return END_GAME
-  }
-  return action.type
-}
-
 export const board = (state = createBoard(3), action) => {
   switch (action.type) {
     case SELECT_CELL: {
       const newBoard = JSON.parse(JSON.stringify(state))
       newBoard[action.row][action.col] = action.currentPlayer
-      action.type = checkForWinner(newBoard, action);
       return newBoard
     }
     case RESET_GAME: {
@@ -36,7 +26,7 @@ export const board = (state = createBoard(3), action) => {
   }
 }
 
-export const game = (state = { currentPlayer: 'X', winner: null }, action) => {
+export const game = (state = { currentPlayer: 'X', winner: null, ended: false }, action) => {
   switch (action.type) {
     case SELECT_CELL: {
       return {
@@ -47,14 +37,15 @@ export const game = (state = { currentPlayer: 'X', winner: null }, action) => {
     case RESET_GAME: {
       return {
         ...state,
-        currentPlayer: 'X'
+        currentPlayer: 'X',
+        ended: false
       }
     }
     case END_GAME: {
-      alert(`Player ${state.currentPlayer} won!\nYAAAAYYYYY!!!`);
       return {
         ...state,
-        winner: state.currentPlayer
+        winner: state.currentPlayer === 'X' ? 'O' : 'X',
+        ended: true
       }
     }
     default: {
