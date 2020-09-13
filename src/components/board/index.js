@@ -13,8 +13,23 @@ export const Board = () => {
   const game = useSelector(selectGame)
   const dispatch = useDispatch()
 
+  let grid = [];
+  board.map((row, idx) => {
+    let rowID = `row${idx}`;
+    let cells = [];
+    
+    row.map((cell, i) => {
+      let cellID = `cell${i}-${idx}`;
+      cells.push(<div className="cell" key={cellID} id={cellID}>{cell}</div>)
+    });
+
+    grid.push(<div className="row" key={idx} id={rowID}>{cells}</div>);
+  })
+  console.log(board)
+
   return (
     <div className="Board">
+      {grid}
       Board: { JSON.stringify(board) }
       <div onClick={() => dispatch(
         selectCell(

@@ -1,3 +1,14 @@
 .Board {
   margin: auto;
 }
+
+.cell {
+  width: 30px;
+  height: 30px;
+  background-color: blueviolet;
+  border: 3px solid brown;
+}
+
+ .row {
+   display: flex;
+ }
