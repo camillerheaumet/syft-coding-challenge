@@ -55,6 +55,7 @@ export const Board = () => {
       {grid}
       <button onClick={() => findRandomEmpty()}>Random move for player {game.currentPlayer}</button>
       <button onClick={() => dispatch(resetGame())}>Reset Game</button>
+      {game.winner && <div>Last winner was Player {game.winner}</div>}
     </div>
   )
 }
